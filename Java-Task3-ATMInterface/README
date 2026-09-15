@@ -1,0 +1,144 @@
+# Java ATM Interface
+
+## Project Overview
+
+The Java ATM Interface is a console-based banking application developed using Java.
+
+The project simulates the basic operations of an ATM machine, including secure user authentication, balance checking, withdrawal, deposit, money transfer, and transaction history.
+
+The application follows Object-Oriented Programming (OOP) concepts and uses multiple Java classes to organize the system.
+
+---
+
+## Aim
+
+To develop a console-based ATM Interface using Java that allows users to securely access their bank account and perform basic banking transactions.
+
+---
+
+## Objectives
+
+- Implement user authentication using User ID and PIN.
+- Allow a maximum of 3 incorrect login attempts.
+- Display the current account balance.
+- Perform cash withdrawal.
+- Perform cash deposit.
+- Transfer money to another account.
+- Display transaction history.
+- Validate sufficient balance before withdrawal and transfer.
+- Store transactions using ArrayList.
+- Apply Object-Oriented Programming concepts.
+
+---
+
+## Features
+
+### 1. Secure Login
+
+The user enters:
+
+- User ID
+- PIN
+
+The system allows a maximum of 3 incorrect login attempts.
+
+### 2. Transaction History
+
+Users can view their previous transactions along with:
+
+- Transaction type
+- Amount
+- Balance after transaction
+- Date and time
+
+### 3. Withdraw Money
+
+The user can enter an amount to withdraw.
+
+The system checks whether sufficient balance is available before completing the withdrawal.
+
+### 4. Deposit Money
+
+The user can enter an amount to deposit.
+
+The balance is automatically updated after a successful deposit.
+
+### 5. Transfer Money
+
+Users can transfer money to another account by entering:
+
+- Recipient account number
+- Transfer amount
+
+The system checks the sender's available balance before completing the transfer.
+
+### 6. Balance Check
+
+The system checks the account balance before withdrawal and transfer operations.
+
+### 7. Colorful Console Interface
+
+The application uses ANSI colors and a centered console layout to make the terminal interface more attractive and easy to use.
+
+---
+
+## Technologies Used
+
+- Java
+- Java Collections
+- ArrayList
+- HashMap
+- Object-Oriented Programming
+- Java Console
+
+---
+
+## OOP Concepts Used
+
+### Encapsulation
+
+Account information such as:
+
+- User ID
+- PIN
+- Account number
+- Account holder
+- Balance
+
+is stored using private variables with getter methods.
+
+### Classes and Objects
+
+The project is divided into multiple classes:
+
+- ATM
+- Account
+- Bank
+- Transaction
+- Main
+
+### Abstraction
+
+The `ATM` class handles ATM operations while the `Account` class manages account-related operations.
+
+### Data Management
+
+`ArrayList` is used to store transaction records and `HashMap` is used to manage bank accounts.
+
+---
+
+## Project Structure
+
+```text
+Java-Task3-ATMInterface
+│
+├── src
+│   ├── ATM.java
+│   ├── Account.java
+│   ├── Bank.java
+│   ├── Main.java
+│   └── Transaction.java
+│
+├── out
+│
+└── README.md
