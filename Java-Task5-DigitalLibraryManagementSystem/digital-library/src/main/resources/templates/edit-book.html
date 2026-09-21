@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Book - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f5f3ff, #ecfeff);
+            color: #1e293b;
+        }
+
+        .navbar {
+            height: 70px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 850px;
+            margin: 45px auto;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            color: #312e81;
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.12);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        input,
+        select {
+            padding: 13px 15px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        }
+
+        input[readonly] {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .btn {
+            border: none;
+            padding: 13px 28px;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .save-btn {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 18px rgba(79, 70, 229, 0.3);
+        }
+
+        .cancel-btn {
+            background: #e2e8f0;
+            color: #334155;
+        }
+
+        .cancel-btn:hover {
+            background: #cbd5e1;
+        }
+
+        .info {
+            margin-top: 25px;
+            padding: 15px;
+            background: #eef2ff;
+            border-left: 4px solid #6366f1;
+            border-radius: 8px;
+            color: #4338ca;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 0 18px;
+            }
+
+            .nav-links {
+                gap: 5px;
+            }
+
+            .nav-links a {
+                padding: 8px 10px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: auto;
+            }
+
+            .card {
+                padding: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        📚 Digital Library
+    </div>
+
+    <div class="nav-links">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/books">Manage Books</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <div class="heading">
+
+        <h1>✏️ Edit Book</h1>
+
+        <p>
+            Update the details of the selected book.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <form action="/admin/books/save" method="post">
+
+            <!-- Hidden ID -->
+            <input
+                type="hidden"
+                name="id"
+                th:value="${book.id}">
+
+            <div class="form-grid">
+
+                <div class="form-group full">
+
+                    <label for="title">
+                        Book Title
+                    </label>
+
+                    <input
+                        type="text"
+                        id="title"
+                        name="title"
+                        th:value="${book.title}"
+                        placeholder="Enter book title"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="author">
+                        Author
+                    </label>
+
+                    <input
+                        type="text"
+                        id="author"
+                        name="author"
+                        th:value="${book.author}"
+                        placeholder="Enter author name"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="isbn">
+                        ISBN
+                    </label>
+
+                    <input
+                        type="text"
+                        id="isbn"
+                        name="isbn"
+                        th:value="${book.isbn}"
+                        readonly>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="category">
+                        Category
+                    </label>
+
+                    <select
+                        id="category"
+                        name="category"
+                        required>
+
+                        <option value="Programming"
+                                th:selected="${book.category == 'Programming'}">
+                            Programming
+                        </option>
+
+                        <option value="Database"
+                                th:selected="${book.category == 'Database'}">
+                            Database
+                        </option>
+
+                        <option value="Web Development"
+                                th:selected="${book.category == 'Web Development'}">
+                            Web Development
+                        </option>
+
+                        <option value="Artificial Intelligence"
+                                th:selected="${book.category == 'Artificial Intelligence'}">
+                            Artificial Intelligence
+                        </option>
+
+                        <option value="Data Science"
+                                th:selected="${book.category == 'Data Science'}">
+                            Data Science
+                        </option>
+
+                        <option value="Networking"
+                                th:selected="${book.category == 'Networking'}">
+                            Networking
+                        </option>
+
+                        <option value="Computer Science"
+                                th:selected="${book.category == 'Computer Science'}">
+                            Computer Science
+                        </option>
+
+                        <option value="General"
+                                th:selected="${book.category == 'General'}">
+                            General
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="quantity">
+                        Total Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        min="1"
+                        th:value="${book.quantity}"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <label for="availableQuantity">
+                        Available Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        id="availableQuantity"
+                        name="availableQuantity"
+                        min="0"
+                        th:max="${book.quantity}"
+                        th:value="${book.availableQuantity}"
+                        required>
+
+                </div>
+
+            </div>
+
+            <div class="info">
+
+                ℹ️ You can update the title, author, category and
+                quantity. Available copies cannot be greater than
+                the total quantity.
+
+            </div>
+
+            <div class="buttons">
+
+                <button
+                    type="submit"
+                    class="btn save-btn">
+
+                    💾 Update Book
+
+                </button>
+
+                <a
+                    href="/admin/books"
+                    class="btn cancel-btn">
+
+                    ✖ Cancel
+
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

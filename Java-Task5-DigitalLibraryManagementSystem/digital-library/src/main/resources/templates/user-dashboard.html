@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>User Dashboard - Digital Library</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #f5f7ff;
+            color: #333;
+        }
+
+        .navbar {
+            min-height: 75px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 45px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .welcome {
+            font-size: 15px;
+        }
+
+        .logout {
+            text-decoration: none;
+            color: white;
+            background: rgba(255,255,255,0.18);
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+        .logout:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 25px;
+        }
+
+        .hero {
+            background: white;
+            border-radius: 20px;
+            padding: 35px;
+            margin-bottom: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .hero h1 {
+            color: #4f46e5;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 30px;
+            text-decoration: none;
+            color: inherit;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            border: 1px solid #eee;
+        }
+
+        .card:hover {
+            transform: translateY(-7px);
+            box-shadow: 0 15px 30px rgba(79,70,229,0.18);
+        }
+
+        .icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 15px;
+            background: #eef2ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .card h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #777;
+            line-height: 1.5;
+            font-size: 14px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 35px;
+            color: #888;
+        }
+
+        @media (max-width: 850px) {
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .navbar {
+                padding: 15px 20px;
+            }
+        }
+
+        @media (max-width: 550px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-right {
+                flex-direction: column;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav class="navbar">
+
+    <div class="logo">
+        📚 Digital Library
+    </div>
+
+    <div class="nav-right">
+
+        <span class="welcome">
+            Welcome,
+            <strong th:text="${user.name}">
+                User
+            </strong>
+        </span>
+
+        <a href="/logout"
+           class="logout">
+            Logout
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- MAIN -->
+
+<div class="container">
+
+    <div class="hero">
+
+        <h1>
+            Welcome,
+            <span th:text="${user.name}">
+                Library Member
+            </span>
+            👋
+        </h1>
+
+        <p>
+            Explore books, manage your borrowed books,
+            make reservations and stay connected with the library.
+        </p>
+
+    </div>
+
+
+    <!-- DASHBOARD CARDS -->
+
+    <div class="cards">
+
+        <!-- Browse Books -->
+
+        <a href="/books"
+           class="card">
+
+            <div class="icon">
+                📚
+            </div>
+
+            <h2>
+                Browse Books
+            </h2>
+
+            <p>
+                Explore our complete collection of books
+                and find your favorite titles.
+            </p>
+
+        </a>
+
+
+        <!-- My Books -->
+
+        <a th:href="@{/user/my-books(email=${user.email})}"
+           class="card">
+
+            <div class="icon">
+                📖
+            </div>
+
+            <h2>
+                My Books
+            </h2>
+
+            <p>
+                View books you have issued and check
+                their due dates.
+            </p>
+
+        </a>
+
+
+        <!-- Reservations -->
+
+        <a th:href="@{/user/reservations(email=${user.email})}"
+           class="card">
+
+            <div class="icon">
+                📌
+            </div>
+
+            <h2>
+                My Reservations
+            </h2>
+
+            <p>
+                View and manage your reserved books.
+            </p>
+
+        </a>
+
+
+        <!-- Profile -->
+
+        <a th:href="@{/user/profile}"
+           class="card">
+
+            <div class="icon">
+                👤
+            </div>
+
+            <h2>
+                My Profile
+            </h2>
+
+            <p>
+                View and update your personal account
+                information.
+            </p>
+
+        </a>
+
+
+        <!-- Contact -->
+
+        <a href="/contact"
+           class="card">
+
+            <div class="icon">
+                💬
+            </div>
+
+            <h2>
+                Contact Library
+            </h2>
+
+            <p>
+                Send questions or queries to the
+                library administrator.
+            </p>
+
+        </a>
+
+
+        <!-- Search -->
+
+        <a href="/books"
+           class="card">
+
+            <div class="icon">
+                🔎
+            </div>
+
+            <h2>
+                Search Books
+            </h2>
+
+            <p>
+                Quickly search books by title or
+                author.
+            </p>
+
+        </a>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+
+    © 2026 Digital Library Management System
+
+</div>
+
+</body>
+
+</html>

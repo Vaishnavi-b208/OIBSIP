@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Books - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f5f3ff, #ecfeff);
+            color: #1e293b;
+        }
+
+        .navbar {
+            height: 70px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .logo {
+            font-size: 23px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: 45px auto;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .heading h1 {
+            color: #312e81;
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .heading p {
+            color: #64748b;
+        }
+
+        .user-card {
+            background: white;
+            padding: 18px 24px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.10);
+            border-left: 5px solid #6366f1;
+        }
+
+        .user-card strong {
+            color: #4338ca;
+        }
+
+        .table-card {
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.12);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #4f46e5;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        tr:hover td {
+            background: #f8fafc;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .issued {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .returned {
+            background: #e0e7ff;
+            color: #3730a3;
+        }
+
+        .return-btn {
+            border: none;
+            background: #ef4444;
+            color: white;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .return-btn:hover {
+            background: #dc2626;
+            transform: translateY(-1px);
+        }
+
+        .disabled-btn {
+            background: #cbd5e1;
+            color: #64748b;
+            border: none;
+            padding: 9px 15px;
+            border-radius: 8px;
+            cursor: not-allowed;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px 20px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 55px;
+            margin-bottom: 15px;
+        }
+
+        .browse-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 11px 22px;
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            text-decoration: none;
+            border-radius: 9px;
+            font-weight: bold;
+        }
+
+        .footer {
+            text-align: center;
+            color: #64748b;
+            padding: 30px;
+        }
+
+        @media (max-width: 700px) {
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .nav-links a {
+                padding: 8px;
+                font-size: 13px;
+            }
+
+            .container {
+                width: 95%;
+            }
+
+            .table-card {
+                padding: 12px;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav class="navbar">
+
+    <div class="logo">
+        📚 Digital Library
+    </div>
+
+    <div class="nav-links">
+        <a href="/user/dashboard">Dashboard</a>
+        <a href="/books">Browse Books</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</nav>
+
+<div class="container">
+
+    <div class="heading">
+
+        <h1>📖 My Books</h1>
+
+        <p>
+            View the books you have issued and their return status.
+        </p>
+
+    </div>
+
+    <div class="user-card">
+
+        👤 Logged in as:
+        <strong th:text="${user.name}">
+            User
+        </strong>
+
+        &nbsp; | &nbsp;
+
+        📧
+        <span th:text="${user.email}">
+            email@example.com
+        </span>
+
+    </div>
+
+    <div class="table-card">
+
+        <!-- Books available -->
+        <div th:if="${issues != null and !issues.isEmpty()}">
+
+            <table>
+
+                <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Book</th>
+                    <th>Author</th>
+                    <th>Issue Date</th>
+                    <th>Due Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+
+                </thead>
+
+                <tbody>
+
+                <tr th:each="issue, stat : ${issues}">
+
+                    <td th:text="${stat.count}">
+                        1
+                    </td>
+
+                    <td th:text="${issue.book.title}">
+                        Java Programming
+                    </td>
+
+                    <td th:text="${issue.book.author}">
+                        Author
+                    </td>
+
+                    <td th:text="${issue.issueDate}">
+                        2026-09-19
+                    </td>
+
+                    <td th:text="${issue.dueDate}">
+                        2026-10-03
+                    </td>
+
+                    <td th:text="${issue.returnDate != null ? issue.returnDate : 'Not Returned'}">
+                        Not Returned
+                    </td>
+
+                    <td>
+
+                        <span
+                                th:if="${issue.status == 'ISSUED'}"
+                                class="status issued">
+                            📚 ISSUED
+                        </span>
+
+                        <span
+                                th:if="${issue.status == 'RETURNED'}"
+                                class="status returned">
+                            ✓ RETURNED
+                        </span>
+
+                    </td>
+
+                    <td>
+
+                        <form
+                                th:if="${issue.status == 'ISSUED'}"
+                                th:action="@{/user/return/{id}(id=${issue.id})}"
+                                method="post">
+
+                            <button
+                                    type="submit"
+                                    class="return-btn">
+
+                                ↩ Return
+
+                            </button>
+
+                        </form>
+
+                        <button
+                                th:if="${issue.status == 'RETURNED'}"
+                                class="disabled-btn"
+                                disabled>
+
+                            Returned
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <!-- No books -->
+        <div
+                th:if="${issues == null or issues.isEmpty()}"
+                class="empty">
+
+            <div class="empty-icon">
+                📚
+            </div>
+
+            <h2>No Books Issued</h2>
+
+            <p style="margin-top: 8px;">
+                You have not issued any books yet.
+            </p>
+
+            <a
+                    href="/books"
+                    class="browse-btn">
+
+                🔎 Browse Books
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+
+    © 2026 Digital Library Management System
+
+</div>
+
+</body>
+
+</html>

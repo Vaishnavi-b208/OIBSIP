@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 30px;
+        }
+
+        .register-container {
+            width: 900px;
+            min-height: 560px;
+            display: flex;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .library-side {
+            width: 45%;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        .library-side h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .library-side p {
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .register-side {
+            width: 55%;
+            padding: 45px 55px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .register-side h2 {
+            color: #333;
+            font-size: 30px;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 22px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .register-btn:hover {
+            opacity: 0.9;
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 18px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #5b4bdb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .error {
+            background: #ffe5e5;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 750px) {
+
+            .register-container {
+                width: 95%;
+            }
+
+            .library-side {
+                display: none;
+            }
+
+            .register-side {
+                width: 100%;
+                padding: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="register-container">
+
+    <!-- Left Side -->
+
+    <div class="library-side">
+
+        <div class="icon">📖</div>
+
+        <h1>Join Digital Library</h1>
+
+        <p>
+            Create your account and explore a world of books.
+            Search, issue, return and reserve books easily
+            from one place.
+        </p>
+
+    </div>
+
+
+    <!-- Registration Form -->
+
+    <div class="register-side">
+
+        <h2>Create Account</h2>
+
+        <p class="subtitle">
+            Register to start using the Digital Library.
+        </p>
+
+        <!-- Error Message -->
+
+        <div th:if="${error}"
+             class="error"
+             th:text="${error}">
+        </div>
+
+
+        <form action="/register"
+              method="post"
+              th:object="${user}">
+
+            <!-- Name -->
+
+            <div class="form-group">
+
+                <label for="name">
+                    Full Name
+                </label>
+
+                <input
+                    type="text"
+                    id="name"
+                    th:field="*{name}"
+                    placeholder="Enter your full name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    th:field="*{email}"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    id="password"
+                    th:field="*{password}"
+                    placeholder="Create a password"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Role -->
+
+            <div class="form-group">
+
+                <label for="role">
+                    Account Type
+                </label>
+
+                <select id="role"
+                        th:field="*{role}">
+
+                    <option value="USER">
+                        User / Member
+                    </option>
+
+                    <option value="ADMIN">
+                        Administrator
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Register -->
+
+            <button type="submit"
+                    class="register-btn">
+
+                Create Account
+
+            </button>
+
+        </form>
+
+
+        <!-- Login Link -->
+
+        <div class="login-link">
+
+            Already have an account?
+
+            <a href="/login">
+                Login Here
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

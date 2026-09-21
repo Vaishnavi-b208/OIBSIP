@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Queries - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8f9ff);
+            color: #1f2937;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 9px;
+            background: rgba(255,255,255,0.15);
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.28);
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #3730a3;
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #64748b;
+            font-size: 17px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.09);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #4f46e5;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+        }
+
+        tr:hover {
+            background: #f8faff;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 7px 13px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .resolved {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .closed {
+            background: #e5e7eb;
+            color: #374151;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 55px;
+            color: #64748b;
+        }
+
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            color: #64748b;
+            margin: 45px 0 25px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="navbar">
+
+    <div class="logo">
+        📚 Digital Library
+    </div>
+
+    <div class="nav-links">
+        <a href="/admin/dashboard">Dashboard</a>
+        <a href="/admin/books">Books</a>
+        <a href="/admin/members">Members</a>
+        <a href="/admin/fines">Fines</a>
+        <a href="/admin/reservations">Reservations</a>
+        <a href="/logout">Logout</a>
+    </div>
+
+</div>
+
+
+<div class="container">
+
+    <div class="header">
+
+        <h1>💬 Member Queries</h1>
+
+        <p>
+            View queries submitted by library members.
+        </p>
+
+    </div>
+
+
+    <div class="card">
+
+        <div class="empty"
+             th:if="${queries == null || #lists.isEmpty(queries)}">
+
+            <div class="empty-icon">
+                📭
+            </div>
+
+            <h2>No Queries Found</h2>
+
+            <p>
+                There are currently no member queries.
+            </p>
+
+        </div>
+
+
+        <table th:if="${queries != null && !#lists.isEmpty(queries)}">
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+
+                    <th>Member</th>
+
+                    <th>Email</th>
+
+                    <th>Subject</th>
+
+                    <th>Message</th>
+
+                    <th>Date</th>
+
+                    <th>Status</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                <tr th:each="query, stat : ${queries}">
+
+                    <td th:text="${stat.count}">
+                        1
+                    </td>
+
+                    <td th:text="${query.user != null ? query.user.name : 'Guest'}">
+                        Vaishnavi
+                    </td>
+
+                    <td th:text="${query.user != null ? query.user.email : 'N/A'}">
+                        email@example.com
+                    </td>
+
+                    <td th:text="${query.subject}">
+                        Book Availability
+                    </td>
+
+                    <td class="message"
+                        th:text="${query.message}">
+                        Query message
+                    </td>
+
+                    <td th:text="${query.createdAt}">
+                        2026-09-21
+                    </td>
+
+                    <td>
+
+                        <span class="status pending"
+                              th:if="${query.status == 'PENDING'}">
+                            ⏳ PENDING
+                        </span>
+
+                        <span class="status resolved"
+                              th:if="${query.status == 'RESOLVED'}">
+                            ✅ RESOLVED
+                        </span>
+
+                        <span class="status closed"
+                              th:if="${query.status == 'CLOSED'}">
+                            CLOSED
+                        </span>
+
+                    </td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<div class="footer">
+
+    © 2026 Digital Library Management System
+
+</div>
+
+</body>
+
+</html>

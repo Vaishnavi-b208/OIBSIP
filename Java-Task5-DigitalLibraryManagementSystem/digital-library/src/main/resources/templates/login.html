@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .login-container {
+            width: 900px;
+            min-height: 520px;
+            display: flex;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .library-side {
+            width: 50%;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            color: white;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+        }
+
+        .library-side h1 {
+            font-size: 38px;
+            margin-bottom: 20px;
+        }
+
+        .library-side p {
+            font-size: 17px;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .icon {
+            font-size: 70px;
+            margin-bottom: 20px;
+        }
+
+        .login-side {
+            width: 50%;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-side h2 {
+            color: #333;
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+        }
+
+        .register {
+            text-align: center;
+            margin-top: 22px;
+            color: #666;
+        }
+
+        .register a {
+            color: #5b4bdb;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .error {
+            background: #ffe5e5;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .success {
+            background: #e4f8e9;
+            color: #218838;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        @media (max-width: 750px) {
+            .login-container {
+                width: 95%;
+            }
+
+            .library-side {
+                display: none;
+            }
+
+            .login-side {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <div class="library-side">
+
+        <div class="icon">📚</div>
+
+        <h1>Digital Library</h1>
+
+        <p>
+            Welcome to your digital library.
+            Browse books, issue your favorite titles,
+            manage reservations and keep track of your reading journey.
+        </p>
+
+    </div>
+
+    <div class="login-side">
+
+        <h2>Welcome Back!</h2>
+
+        <p class="subtitle">
+            Login to access your library account.
+        </p>
+
+        <div th:if="${error}" class="error" th:text="${error}"></div>
+
+        <div th:if="${success}" class="success" th:text="${success}"></div>
+
+        <form action="/login" method="post">
+
+            <div class="form-group">
+
+                <label for="email">Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="password">Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+            </div>
+
+            <button type="submit" class="login-btn">
+                Login
+            </button>
+
+        </form>
+
+        <div class="register">
+            Don't have an account?
+            <a href="/register">Create Account</a>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

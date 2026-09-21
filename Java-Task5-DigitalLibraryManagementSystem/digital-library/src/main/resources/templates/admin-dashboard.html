@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Admin Dashboard - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eef2ff, #f8fafc);
+            color: #1e293b;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 25px 45px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 30px;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            opacity: 0.9;
+        }
+
+        .logout {
+            background: white;
+            color: #4f46e5;
+            text-decoration: none;
+            padding: 11px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .logout:hover {
+            background: #eef2ff;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 25px;
+        }
+
+        .welcome {
+            margin-bottom: 30px;
+        }
+
+        .welcome h2 {
+            font-size: 28px;
+            color: #312e81;
+        }
+
+        .welcome p {
+            margin-top: 8px;
+            color: #64748b;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 22px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: 0.25s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+
+        .number {
+            font-size: 38px;
+            font-weight: bold;
+            color: #4f46e5;
+        }
+
+        .actions-title {
+            font-size: 25px;
+            color: #312e81;
+            margin-bottom: 20px;
+        }
+
+        .actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .action {
+            background: white;
+            text-decoration: none;
+            color: #1e293b;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            transition: 0.25s;
+        }
+
+        .action:hover {
+            transform: translateY(-4px);
+            border-color: #6366f1;
+            box-shadow: 0 10px 25px rgba(79,70,229,0.15);
+        }
+
+        .action h3 {
+            color: #4f46e5;
+            margin-bottom: 8px;
+        }
+
+        .action p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        @media (max-width: 800px) {
+            .stats,
+            .actions {
+                grid-template-columns: 1fr;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="header">
+    <div>
+        <h1>📚 Digital Library</h1>
+        <p>Administrator Control Panel</p>
+    </div>
+
+    <a href="/logout" class="logout">Logout</a>
+</div>
+
+<div class="container">
+
+    <div class="welcome">
+        <h2>Welcome, Administrator 👋</h2>
+        <p>Manage your digital library from one place.</p>
+    </div>
+
+    <!-- Statistics -->
+    <div class="stats">
+
+        <div class="card">
+            <h3>📚 Total Books</h3>
+            <div class="number" th:text="${totalBooks}">0</div>
+        </div>
+
+        <div class="card">
+            <h3>👥 Total Members</h3>
+            <div class="number" th:text="${totalMembers}">0</div>
+        </div>
+
+        <div class="card">
+            <h3>📖 Issued Books</h3>
+            <div class="number" th:text="${issuedBooks}">0</div>
+        </div>
+
+        <div class="card">
+            <h3>💰 Unpaid Fines</h3>
+            <div class="number" th:text="${unpaidFines}">0</div>
+        </div>
+
+        <div class="card">
+            <h3>💬 Pending Queries</h3>
+            <div class="number" th:text="${pendingQueries}">0</div>
+        </div>
+
+        <div class="card">
+            <h3>📌 Reservations</h3>
+            <div class="number" th:text="${reservations}">0</div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <h2 class="actions-title">Quick Actions</h2>
+
+    <div class="actions">
+
+        <a href="/admin/books" class="action">
+            <h3>📚 Manage Books</h3>
+            <p>Add, edit and delete books.</p>
+        </a>
+
+        <a href="/admin/books/add" class="action">
+            <h3>➕ Add Book</h3>
+            <p>Add a new book to the library.</p>
+        </a>
+
+        <a href="/admin/members" class="action">
+            <h3>👥 Members</h3>
+            <p>View registered library members.</p>
+        </a>
+
+        <a href="/admin/issued-books" class="action">
+            <h3>📖 Issued Books</h3>
+            <p>View issued books and due dates.</p>
+        </a>
+
+        <a href="/admin/fines" class="action">
+            <h3>💰 Fine Management</h3>
+            <p>View and manage library fines.</p>
+        </a>
+
+        <a href="/admin/queries" class="action">
+            <h3>💬 User Queries</h3>
+            <p>View questions submitted by users.</p>
+        </a>
+
+        <a href="/admin/reservations" class="action">
+            <h3>📌 Reservations</h3>
+            <p>View active book reservations.</p>
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

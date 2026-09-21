@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fine Management - Digital Library</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 35px;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        .header {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        .header h1 {
+            color: #4f46e5;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: #777;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #4f46e5;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .filters {
+            background: white;
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .filter-btn {
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            background: #f1f1f1;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .filter-btn:hover {
+            background: #e0e0ff;
+        }
+
+        .table-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #4f46e5;
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f8f8ff;
+        }
+
+        .amount {
+            font-weight: bold;
+            color: #dc2626;
+        }
+
+        .paid {
+            color: #15803d;
+            background: #dcfce7;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .unpaid {
+            color: #b91c1c;
+            background: #fee2e2;
+            padding: 7px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .pay-btn {
+            border: none;
+            background: #16a34a;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .pay-btn:hover {
+            background: #15803d;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 50px;
+            color: #777;
+        }
+
+        @media (max-width: 700px) {
+
+            body {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 18px;
+                text-align: center;
+            }
+
+            th,
+            td {
+                padding: 10px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div>
+            <h1>💰 Fine Management</h1>
+            <p>Manage library fines and payment status</p>
+        </div>
+
+        <a href="/admin/dashboard" class="back-btn">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <div class="filters">
+
+        <a href="/admin/fines" class="filter-btn">
+            📋 All Fines
+        </a>
+
+        <a href="/admin/fines/unpaid" class="filter-btn">
+            🔴 Unpaid Fines
+        </a>
+
+        <a href="/admin/fines/paid" class="filter-btn">
+            🟢 Paid Fines
+        </a>
+
+    </div>
+
+
+    <div class="table-card">
+
+        <table>
+
+            <thead>
+
+            <tr>
+                <th>#</th>
+                <th>Member</th>
+                <th>Book</th>
+                <th>Due Date</th>
+                <th>Return Date</th>
+                <th>Fine Amount</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr th:each="fine, stat : ${fines}">
+
+                <td th:text="${stat.count}">
+                    1
+                </td>
+
+                <td>
+                    <strong th:text="${fine.user.name}">
+                        Member
+                    </strong>
+                    <br>
+                    <small th:text="${fine.user.email}">
+                        email@example.com
+                    </small>
+                </td>
+
+                <td th:text="${fine.issue.book.title}">
+                    Book Title
+                </td>
+
+                <td th:text="${fine.issue.dueDate}">
+                    2026-09-10
+                </td>
+
+                <td th:text="${fine.issue.returnDate != null ? fine.issue.returnDate : 'Not Returned'}">
+                    Not Returned
+                </td>
+
+                <td class="amount">
+                    ₹<span th:text="${fine.amount}">0.00</span>
+                </td>
+
+                <td>
+
+                    <span
+                        th:if="${fine.paid}"
+                        class="paid">
+                        ✓ PAID
+                    </span>
+
+                    <span
+                        th:unless="${fine.paid}"
+                        class="unpaid">
+                        ✕ UNPAID
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <form
+                        th:if="${!fine.paid}"
+                        th:action="@{'/admin/fines/pay/' + ${fine.id}}"
+                        method="post">
+
+                        <button
+                            type="submit"
+                            class="pay-btn">
+                            ✓ Mark Paid
+                        </button>
+
+                    </form>
+
+                    <span
+                        th:if="${fine.paid}"
+                        style="color:#15803d; font-weight:bold;">
+                        Completed
+                    </span>
+
+                </td>
+
+            </tr>
+
+
+            <tr th:if="${#lists.isEmpty(fines)}">
+
+                <td colspan="8" class="empty">
+
+                    <h2>📚 No Fines Found</h2>
+
+                    <p>
+                        There are currently no fines to display.
+                    </p>
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+</html>
